@@ -12,16 +12,13 @@ from models.state import State
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
 def get_list_of_cities(state_id):
     """List of cities vinculed with a state_id"""
+    cities_list = []
     stateIns = storage.get(State, state_id)
     if not stateIns:
-        return abort(404)
-    city_storage = storage.all(City)
-    city_list = []
-    for obj in city_storage:
-        cityIns = storage.get(City, (obj.split(".")[1]))
-        if cityIns.state_id == stateIns.id:
-            city_list.append(cityIns.to_dict())
-    return jsonify(city_list)
+        abort(404)
+    for city in stateIns.cities  :
+        cities_list.append(city.to_dict())
+    return jsonify(cities_list)
 
 
 @app_views.route("/cities/<city_id>", methods=["GET"])
@@ -42,8 +39,8 @@ def delete_city(city_id):
         return abort(404)
     else:
         storage.delete(cityObj)
-        return 200, {}
-
+        storage.save()
+        return jsonify({}), 200
 
 @app_views.route("/api/v1/states/<state_id>/cities", methods=["POST"])
 def create_city(state_id):
@@ -67,7 +64,7 @@ def create_city(state_id):
 def update_city(city_id):
     cityObj = storage.get(City, city_id)
     if not cityObj:
-        return abort(404)
+        abort(404)
     else:
         data = request.get_json()
         if not data:
