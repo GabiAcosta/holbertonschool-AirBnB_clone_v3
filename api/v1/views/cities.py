@@ -1,4 +1,7 @@
-
+#!/usr/bin/python3
+"""
+Routes of endline of City
+"""
 from flask import Flask, jsonify, abort, request
 from models import storage
 from api.v1.views import app_views
@@ -15,7 +18,7 @@ def get_list_of_cities(state_id):
     city_storage = storage.all(City)
     city_list = []
     for obj in city_storage:
-        cityIns =  storage.get(City, (obj.split(".")[1]))
+        cityIns = storage.get(City, (obj.split(".")[1]))
         if cityIns.state_id == stateIns.id:
             city_list.append(cityIns.to_dict())
     return jsonify(city_list)
@@ -36,7 +39,7 @@ def delete_city(city_id):
     """ Delete a city object"""
     cityObj = storage.get(City, city_id)
     if not cityObj:
-            return abort(404)
+        return abort(404)
     else:
         storage.delete(cityObj)
         return 200, {}
@@ -64,14 +67,13 @@ def create_city(state_id):
 def update_city(city_id):
     cityObj = storage.get(City, city_id)
     if not cityObj:
-            return abort(404)
+        return abort(404)
     else:
         data = request.get_json()
         if not data:
             return jsonify('Not a JSON'), 400
         for attr, value in data.items():
-            if not attr in ["id", "state_id", "created_at", "updated_at"]: 
+            if attr not in ["id", "state_id", "created_at", "updated_at"]:
                 setattr(cityObj, attr, value)
         cityObj.save()
         return jsonify(cityObj.to_dict), 200
-
