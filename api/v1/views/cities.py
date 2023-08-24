@@ -36,7 +36,7 @@ def delete_city(city_id):
     """ Delete a city object"""
     cityObj = storage.get(City, city_id)
     if not cityObj:
-        return abort(404)
+        abort(404)
     else:
         storage.delete(cityObj)
         storage.save()
@@ -51,9 +51,9 @@ def create_city(state_id):
         abort(404)
     data = request.get_json(silent=True)
     if data is None:
-        return jsonify('Not a JSON'), 400
+        abort(400, 'Not a JSON')
     elif 'name' not in data:
-        return jsonify('Missing name'), 400
+        abort(400, 'Missing name')
     data["state_id"] = state_id
     cityIns = City(**data)
     cityIns.save()
@@ -68,7 +68,7 @@ def update_city(city_id):
     else:
         data = request.get_json()
         if not data:
-            return jsonify('Not a JSON'), 400
+            abort(400, 'Not a JSON')
         for attr, value in data.items():
             if attr not in ["id", "state_id", "created_at", "updated_at"]:
                 setattr(cityObj, attr, value)
