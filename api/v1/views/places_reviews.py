@@ -7,6 +7,7 @@ from models import storage
 from api.v1.views import app_views
 from models.place import Place
 from models.review import Review
+from models.user import User
 
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET'])
@@ -57,6 +58,9 @@ def create_review(place_id):
         abort(400, 'Missing text')
     elif "user_id" not in data:
         abort(400, "Missing user_id")
+    user_id = storage.get(User, data["user_id"])
+    if user_id is None:
+        abort(404)
     data["place_id"] = place_id
     reviewIns = Review(**data)
     reviewIns.save()
