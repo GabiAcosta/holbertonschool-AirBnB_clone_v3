@@ -72,7 +72,8 @@ def update_place(place_id):
     if not data:
         abort(400, 'Not a JSON')
     for attr, value in data.items():
-        if attr not in ["id", "user_id", "city_id","created_at", "updated_at"]:
+        if attr not in ["id", "user_id", "city_id", "created_at",
+                        "updated_at"]:
             setattr(placeObj, attr, value)
     placeObj.save()
     return jsonify(placeObj.to_dict()), 200
