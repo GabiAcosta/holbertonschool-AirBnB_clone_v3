@@ -13,3 +13,4 @@ from api.v1.views.index import *  # noqa: E42
 from api.v1.views.states import *  # noqa: E42
 from api.v1.views.cities import *  # noqa: E42
 from api.v1.views.amenities import *  # noqa: E42
+from api.v1.views.places_reviews import *  # noqa: E42
