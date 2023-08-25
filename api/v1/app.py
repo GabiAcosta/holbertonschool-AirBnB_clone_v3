@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+"""
+Manager of app
+"""
 from flask import Flask, jsonify
 from models import storage
 from os import getenv
