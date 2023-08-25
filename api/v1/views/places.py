@@ -63,7 +63,6 @@ def create_place(city_id):
     if user_id is None:
         abort(404)
     data["city_id"] = city_id
-    data["user_id"] = user_id
     placeIns = Place(**data)
     placeIns.save()
     return jsonify(placeIns.to_dict()), 201
