@@ -57,7 +57,7 @@ def create_review(place_id):
         abort(400, 'Missing text')
     elif "user_id" not in data:
         abort(400, "Missing user_id")
-    data["state_id"] = place_id
+    data["place_id"] = place_id
     reviewIns = Review(**data)
     reviewIns.save()
     return jsonify(reviewIns.to_dict()), 201
